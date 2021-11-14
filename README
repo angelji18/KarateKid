@@ -1,0 +1,7 @@
+In this implementation I included the the camera code as a part of the GameObject class, and declared the cameraRect (an SDL_Rect object) global.
+the cameraRect is then passed to all update and render functions.
+
+
+The player object is always in the center of the camera.
+cameraRect.x and cameraRect.y hold the screen's center position with respect to the player-character's(PC) position.
+these values are then subtracted out of the actual coordinate position of the PC so as to keep the PC in the centre of the environment until it reaches the end.
