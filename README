@@ -3,3 +3,8 @@ the cameraRect is then passed to all update and render functions.
 
 cameraRect.x and cameraRect.y hold the screen's center position values with respect to the player-character's(PC) position.
 these values are then subtracted from the actual coordinate position of the PC/tile so as to render visible area.
+
+
+To Run:
+make
+./a.out
