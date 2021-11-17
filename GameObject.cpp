@@ -16,7 +16,7 @@ GameObject::~GameObject(){
 
 void GameObject::initGameObject()
 {
-  spriteManager = new SpriteManager("KarateKid.png",0,0);
+  spriteManager = new SpriteManager("assets/KK_MC.png",0,0);
 }
 
 void GameObject::updateGameObject(SDL_Rect& cameraRect){
@@ -38,7 +38,7 @@ void GameObject::setCamera( SDL_Rect& cameraRect )
     //Center the camera
     cameraRect.x = (spriteManager->getCharacterXpos() + 150 / 2) - SCREEN_WIDTH / 2;
     cameraRect.y = (spriteManager->getCharacterYpos() + 150 / 2) - SCREEN_HEIGHT / 2;
-    
+
     //Keep the camera in bounds
     if(cameraRect.x < 0)
     {

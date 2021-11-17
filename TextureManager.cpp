@@ -19,8 +19,8 @@ void TextureManager::renderTexture(int tiletype, int x, int y,SDL_Texture* textu
   {
     if(tiletype == 999){
       //size of player charachter larger
-      renderQuad.w = 300;
-      renderQuad.h = 300;
+      renderQuad.w = MC_IMG_DEST;
+      renderQuad.h = MC_IMG_DEST;
 
     }
     else{ //bacckground smaller (150)

@@ -29,11 +29,17 @@ extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
 
 //IMG size constants
-extern const int IMG_SRC;
-extern const int IMG_DEST;
+extern const int MC_IMG_SRC;
+extern const int MC_IMG_DEST;
 
 extern bool flag_left;
+extern int leftcount; //for left movement
+extern int rightcount; //for right movement
 extern bool flag_right;
+extern int start; // to place the player in starting position
+
+//character step on xaxis
+extern const int STEPX;
 
 
 class GameEngine

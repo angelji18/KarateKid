@@ -13,8 +13,8 @@ TileMap::TileMap(){
   tileMapTexture = TextureManager::loadTexture("EnvTiles.png");
   loadTileMap(lvl1);
   std::cout << lvl1 << '\n';
-  srcRect.w = IMG_SRC;
-  srcRect.h = IMG_SRC;
+  srcRect.w = 400;
+  srcRect.h = 400;
 }
 
 
@@ -37,8 +37,8 @@ void TileMap::drawTileMap(SDL_Rect& cameraRect){
     for(int col =0 ;col <25 ;col++){
       tiletype = map[row][col];
 
-      destRect.x = col*IMG_DEST; //position of the destRect will be (current col x width per tile)
-      destRect.y = row*IMG_DEST;
+      destRect.x = col*150; //position of the destRect will be (current col x width per tile)
+      destRect.y = row*150;
 
 
 

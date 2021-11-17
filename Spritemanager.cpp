@@ -16,30 +16,54 @@ SpriteManager::~SpriteManager()
 
 void SpriteManager::updateSprite(){
 
-    srcRect.x = 800;
+    // srcRect.x = 1600;
     srcRect.y = 0;
-    srcRect.w = 400;
-    srcRect.h = 400;
-
-
-
-    if(flag_right == true){
-      xpos = SpriteManager::getCharacterXpos()+50;
+    srcRect.w = MC_IMG_SRC;
+    srcRect.h = MC_IMG_SRC;
+  
+    if(start == 0){
+      srcRect.x = 1600;
+      xpos = SpriteManager::getCharacterXpos() + STEPX;
       destRect.x = xpos;
-      flag_right =false;
-    }
+      start = 1 ;
 
-    else if(flag_left == true){
-      xpos = SpriteManager::getCharacterXpos()-50;
-      destRect.x = xpos;
-      flag_left =false;
     }
     else{
-      xpos = SpriteManager::getCharacterXpos();
-      destRect.x = xpos;
+      if(flag_right == true){
+        if(rightcount == 0){
+          srcRect.x = 1600;
+        }
+        else{
+          srcRect.x = 2000;
+        }
+
+        xpos = SpriteManager::getCharacterXpos() + STEPX;
+        destRect.x = xpos;
+        flag_right =false;
+      }
+
+      else if(flag_left == true){
+        if(leftcount == 0){
+          srcRect.x = 1200;
+        }
+        else{
+          srcRect.x = 800;
+        }
+        xpos = SpriteManager::getCharacterXpos() - STEPX;
+        destRect.x = xpos;
+        flag_left =false;
+      }
+
+
     }
 
-    destRect.y = 200;
+    // else{
+    //   srcRect.x = 1000;
+    //   xpos = SpriteManager::getCharacterXpos();
+    //   destRect.x = xpos;
+    // }
+
+    destRect.y = 320;
 
 }
 

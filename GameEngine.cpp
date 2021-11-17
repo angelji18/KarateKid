@@ -8,11 +8,17 @@ const int LEVEL_HEIGHT = 960;
  const int SCREEN_HEIGHT = 600;
 
 //size constants
- const int IMG_SRC = 400; //height and width for source Rectangle
- const int IMG_DEST = 150; // height and width for destination rectangle
+ const int MC_IMG_SRC = 400; //height and width for source Rectangle
+ const int MC_IMG_DEST = 150; // height and width for destination rectangle
+
+ const int STEPX = 10;
 
 bool flag_left = false;
 bool flag_right = false;
+
+int leftcount = 0;
+int rightcount = 0;
+int start = 0;
 
 //object definition
 TileMap *tileMap = NULL;
@@ -81,10 +87,22 @@ void GameEngine::handleGameEngineEvents(){
         {
           case SDLK_LEFT:
             flag_left = true;
+            if (leftcount == 2){
+              leftcount = 0;
+            }
+            else{
+              leftcount++;
+            }
             break;
 
           case SDLK_RIGHT:
               flag_right = true;
+              if (rightcount == 2){
+                rightcount = 0;
+              }
+              else{
+                rightcount++;
+              }
               break;
           }
 
