@@ -16,6 +16,7 @@
 
 #include "TextureManager.h"
 #include "GameObject.h"
+#include "Enemy.h"
 #include "TileMap.h"
 #include "SpriteManager.h"
 

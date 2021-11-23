@@ -28,7 +28,7 @@ void GameObject::updateGameObject(SDL_Rect& cameraRect){
 
 
 void GameObject::renderGameObject(SDL_Rect& cameraRect){
-
+  std::cout << "MC: ";
   spriteManager -> renderSprite(cameraRect);
 }
 
@@ -57,4 +57,12 @@ void GameObject::setCamera( SDL_Rect& cameraRect )
         cameraRect.y = LEVEL_HEIGHT - cameraRect.h;
     }
 
+}
+
+int GameObject::getObjectXpos() {
+	return spriteManager->getCharacterXpos();
+}
+
+int GameObject::getObjectYpos() {
+	return spriteManager->getCharacterYpos();
 }

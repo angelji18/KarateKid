@@ -23,6 +23,7 @@ int start = 0;
 //object definition
 TileMap *tileMap = NULL;
 GameObject *karateKid = NULL;
+Enemy *enemy1 = NULL;
 SDL_Renderer* GameEngine::renderer = NULL;
 
 
@@ -61,10 +62,12 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   SDL_SetRenderDrawColor(renderer, 192, 238, 254, 1);
   //object initialization
   karateKid = new GameObject();
+  enemy1 = new Enemy();
   tileMap = new TileMap();
 
 
   karateKid->initGameObject();
+  enemy1->initEnemy();
 
 
   return 0;
@@ -80,7 +83,7 @@ void GameEngine::handleGameEngineEvents(){
 
       if(input.type == SDL_KEYDOWN)
       {
-        std::cout<<"Key Pressed"<<std::endl;
+        //std::cout<<"Key Pressed"<<std::endl;
 
 
         switch(input.key.keysym.sym)
@@ -110,9 +113,12 @@ void GameEngine::handleGameEngineEvents(){
     }
 }
 
+
 void GameEngine::updateGameEngine(SDL_Rect& cameraRect){
 
   karateKid->updateGameObject(cameraRect);
+  enemy1->updateEnemy(cameraRect, karateKid->getObjectXpos());
+  
 
 }
 
@@ -122,6 +128,7 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
   SDL_RenderClear(renderer);
   tileMap->drawTileMap(cameraRect);
   karateKid->renderGameObject(cameraRect);
+  enemy1->renderEnemy(cameraRect);
   SDL_RenderPresent(renderer);
 
 }
