@@ -24,6 +24,7 @@ int start = 0;
 TileMap *tileMap = NULL;
 GameObject *karateKid = NULL;
 SDL_Renderer* GameEngine::renderer = NULL;
+ScreenManager *startScreen = NULL;
 
 
 
@@ -55,6 +56,8 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   if(renderer){
     std::cout << "Renderer created successfully" << std::endl;
   }
+
+  startScreen = new ScreenManager();
   isRunning =true;
 
 
@@ -80,22 +83,25 @@ void GameEngine::handleGameEngineEvents(){
 
       if(input.type == SDL_KEYDOWN)
       {
-        std::cout<<"Key Pressed"<<std::endl;
+        //std::cout<<"Key Pressed"<<std::endl;
 
 
         switch(input.key.keysym.sym)
         {
           case SDLK_LEFT:
-            flag_left = true;
-            if (leftcount == 2){
-              leftcount = 0;
-            }
-            else{
-              leftcount++;
+            if(startScreen->getState() == 0){
+              flag_left = true;
+              if (leftcount == 2){
+                leftcount = 0;
+              }
+              else{
+                leftcount++;
+              }
             }
             break;
 
           case SDLK_RIGHT:
+            if(startScreen->getState() == 0){
               flag_right = true;
               if (rightcount == 2){
                 rightcount = 0;
@@ -103,10 +109,14 @@ void GameEngine::handleGameEngineEvents(){
               else{
                 rightcount++;
               }
+            }
               break;
-          }
-
+          case SDLK_SPACE:
+            startScreen->chanageState(0);
+            break;
         }
+
+      }
     }
 }
 
@@ -122,6 +132,9 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
   SDL_RenderClear(renderer);
   tileMap->drawTileMap(cameraRect);
   karateKid->renderGameObject(cameraRect);
+  if(startScreen->getState()){
+    startScreen->initScreen();
+  }
   SDL_RenderPresent(renderer);
 
 }
