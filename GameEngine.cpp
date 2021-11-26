@@ -15,6 +15,7 @@ const int LEVEL_HEIGHT = 960;
 
 bool flag_left = false;
 bool flag_right = false;
+bool flag_punch = false; // ADDED BY KALEB
 
 int leftcount = 0;
 int rightcount = 0;
@@ -23,8 +24,8 @@ int start = 0;
 //object definition
 TileMap *tileMap = NULL;
 GameObject *karateKid = NULL;
+Enemy *enemy1 = NULL;
 SDL_Renderer* GameEngine::renderer = NULL;
-ScreenManager *startScreen = NULL;
 
 
 
@@ -56,23 +57,33 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   if(renderer){
     std::cout << "Renderer created successfully" << std::endl;
   }
-
-  startScreen = new ScreenManager();
   isRunning =true;
 
 
   SDL_SetRenderDrawColor(renderer, 192, 238, 254, 1);
   //object initialization
   karateKid = new GameObject();
+  enemy1 = new Enemy(10);
   tileMap = new TileMap();
 
 
   karateKid->initGameObject();
+  enemy1->initEnemy();
 
 
   return 0;
 }
 
+
+// ADDED BY KALEB
+// Tell if player is within given range to an enemy
+bool playerAtEnemy(Enemy *enem, int range) {
+	int playerX = karateKid->getObjectXpos();
+	int enemyX = enem->getEnemyXpos();
+	int xDist = playerX - enemyX;
+	if (abs(xDist) <= range) return true;
+	return false;
+}
 
 void GameEngine::handleGameEngineEvents(){
   SDL_Event input;
@@ -89,47 +100,43 @@ void GameEngine::handleGameEngineEvents(){
         switch(input.key.keysym.sym)
         {
           case SDLK_LEFT:
-            if(startScreen->getState() == 0){
-                flag_left = true;
-              if (leftcount == 2){
-                leftcount = 0;
-              }
-              else{
-                leftcount++;
-              }
+            flag_left = true; 
+            if (leftcount == 2){
+              leftcount = 0;
+            }
+            else{
+              leftcount++;
             }
             break;
 
           case SDLK_RIGHT:
-            if(startScreen->getState() == 0){
-              flag_right = true;
+              if (playerAtEnemy(enemy1, 50)) flag_right = false; // added
+              else flag_right = true; // modified
               if (rightcount == 2){
                 rightcount = 0;
               }
               else{
                 rightcount++;
               }
-            }
               break;
-          case SDLK_RETURN:
-            if(startScreen->getState() == 1){
-              startScreen->chanageState(0);
-            }
-            break;
-          
-          //TODO: temp until we have a way to end the game
-          case SDLK_SPACE:
-            startScreen->chanageState(2);
-            break;
-        }
+           // ADDED BY KALEB
+           case SDLK_SPACE:
+              // player has punched
+              flag_punch = true;
+              // if the player is within hit range, updateEnemy to react to hit
+              if (playerAtEnemy(enemy1, 70)) 
+                enemy1->setHitFlag(true); 
+          }
 
-      }
+        }
     }
 }
 
 void GameEngine::updateGameEngine(SDL_Rect& cameraRect){
 
   karateKid->updateGameObject(cameraRect);
+  enemy1->updateEnemy(cameraRect, karateKid->getObjectXpos());
+  
 
 }
 
@@ -139,11 +146,7 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
   SDL_RenderClear(renderer);
   tileMap->drawTileMap(cameraRect);
   karateKid->renderGameObject(cameraRect);
-  if(startScreen->getState() == 1){
-    startScreen->initScreen();
-  } else if(startScreen->getState() == 2){
-    startScreen->endScreen();
-  }
+  enemy1->renderEnemy(cameraRect);
   SDL_RenderPresent(renderer);
 
 }

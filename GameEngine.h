@@ -13,13 +13,12 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_timer.h"
-#include "SDL2/SDL_ttf.h"
 
 #include "TextureManager.h"
 #include "GameObject.h"
+#include "Enemy.h"
 #include "TileMap.h"
 #include "SpriteManager.h"
-#include "ScreenManager.h"
 
 
 
@@ -39,6 +38,7 @@ extern int leftcount; //for left movement
 extern int rightcount; //for right movement
 extern bool flag_right;
 extern int start; // to place the player in starting position
+extern bool flag_punch; // for player punching 
 
 //character step on xaxis
 extern const int STEPX;

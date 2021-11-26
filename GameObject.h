@@ -17,7 +17,11 @@ class GameObject{
     void renderGameObject(SDL_Rect& cameraRect);
 
     void setCamera( SDL_Rect& cameraRect );
-
+    
+    // ADDED FOR ENEMY COLLISION
+    int getObjectXpos();
+    int getObjectYpos();
+    
 
 };
 

@@ -1,3 +1,4 @@
+
 #include "GameEngine.h"
 
 
@@ -18,7 +19,6 @@ int main(){
   gameEngine->initGameEngine("MY GAME",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,SCREEN_WIDTH,SCREEN_HEIGHT,false);
 
   while(gameEngine->running()){
-
     frameStart = SDL_GetTicks(); // time since we first initialized SDL
 
     gameEngine->handleGameEngineEvents();
