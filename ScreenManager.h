@@ -9,9 +9,10 @@ class ScreenManager{
         
     public:
         ScreenManager();
-        // ~ScreenManager();
+        ~ScreenManager();
 
         void initScreen();
+        void endScreen();
         void chanageState(int);
         int getState();
 };

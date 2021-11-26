@@ -90,7 +90,7 @@ void GameEngine::handleGameEngineEvents(){
         {
           case SDLK_LEFT:
             if(startScreen->getState() == 0){
-              flag_left = true;
+                flag_left = true;
               if (leftcount == 2){
                 leftcount = 0;
               }
@@ -111,8 +111,15 @@ void GameEngine::handleGameEngineEvents(){
               }
             }
               break;
+          case SDLK_RETURN:
+            if(startScreen->getState() == 1){
+              startScreen->chanageState(0);
+            }
+            break;
+          
+          //TODO: temp until we have a way to end the game
           case SDLK_SPACE:
-            startScreen->chanageState(0);
+            startScreen->chanageState(2);
             break;
         }
 
@@ -132,8 +139,10 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
   SDL_RenderClear(renderer);
   tileMap->drawTileMap(cameraRect);
   karateKid->renderGameObject(cameraRect);
-  if(startScreen->getState()){
+  if(startScreen->getState() == 1){
     startScreen->initScreen();
+  } else if(startScreen->getState() == 2){
+    startScreen->endScreen();
   }
   SDL_RenderPresent(renderer);
 
