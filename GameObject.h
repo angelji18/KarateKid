@@ -21,6 +21,13 @@ class GameObject{
     // ADDED FOR ENEMY COLLISION
     int getObjectXpos();
     int getObjectYpos();
+    int getObjectHealth();
+    
+    // ADDED BY KALEB
+    void alterHealth(int val); // increment/decrement health by given value
+    
+  private:
+    int health; // ADDED BY KALEB
     
 
 };

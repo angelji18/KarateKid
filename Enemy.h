@@ -9,7 +9,7 @@ extern SDL_Rect cameraRect;
 
 class Enemy{
   public:
-    Enemy(int health);
+    Enemy(int health, int block_chance, int strength);
     ~Enemy();
 
     void initEnemy();
@@ -24,9 +24,17 @@ class Enemy{
     void setHitFlag(bool flag);
     
     bool enemyIsDead();
+    bool blocked(int &flag);
+    bool enemyThrewPunch(); // tell if enemy has thrown a punch
     
   private:
     int health; 
+    int block_chance;
+    int strength;
+    
+    bool punching;
+    
+    bool hitPlayer(int &flag); // try to hit player
 
 };
 

@@ -7,7 +7,7 @@ SpriteManager *spriteManager = NULL;
 
 
 GameObject::GameObject(){
-
+	health = 100; // ADDED BY KALEB
 }
 
 GameObject::~GameObject(){
@@ -66,3 +66,16 @@ int GameObject::getObjectXpos() {
 int GameObject::getObjectYpos() {
 	return spriteManager->getCharacterYpos();
 }
+
+int GameObject::getObjectHealth() {
+	return health;
+}
+
+// increment/decrement health by given value
+void GameObject::alterHealth(int val) {
+	health += val;
+	std::cout << "HEALTH NOW: " << health << std::endl;
+}
+
+
+

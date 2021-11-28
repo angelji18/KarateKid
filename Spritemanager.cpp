@@ -86,6 +86,10 @@ void SpriteManager::updateSprite(){
 // flag table:
 // 0 - calm
 // 1 - moving
+// 2 - injured
+// 3 - dead
+// 4 - block
+// 5 - punch
 void SpriteManager::updateEnemySprite(int flag, int step) {
 	srcRect.y = 0;
 	srcRect.w = MC_IMG_SRC;
@@ -93,11 +97,13 @@ void SpriteManager::updateEnemySprite(int flag, int step) {
 	
 	// if calm
 	if (flag == 0) {
+		srcRect.y = 0;
 		srcRect.x = 1600;
 		xpos = SpriteManager::getCharacterXpos();
 	}
 	// if moving
 	if (flag == 1) {
+		srcRect.y = 0;
 		// if step < 0, move left
 		if (step <= 0) {
 			srcRect.x = 1200;
@@ -109,16 +115,27 @@ void SpriteManager::updateEnemySprite(int flag, int step) {
 		xpos = SpriteManager::getCharacterXpos() + step;
 	}
 	// if hit
-	// just die (temp)
+	// show red
 	if (flag == 2) {
 		std::cout << "HIT!" << std::endl;
 		//lastPosition = srcRect.x;
 		srcRect.y = srcRect.h*2;
-		srcRect.x = 1200;	
+		srcRect.x = srcRect.w*3;	
 	}
+	// if dead
 	if (flag == 3) {
 		srcRect.y = srcRect.h*2;
-		srcRect.x = 
+		srcRect.x = 0; 
+	}
+	// if block
+	if (flag == 4) {
+		srcRect.y = 0;
+		srcRect.x = srcRect.w*2;
+	}
+	// if punch
+	if (flag == 5) {
+		srcRect.y = 0;
+		srcRect.x = 0;
 	}
 	destRect.x = xpos;
 	destRect.y = 320;

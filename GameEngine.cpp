@@ -63,7 +63,7 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   SDL_SetRenderDrawColor(renderer, 192, 238, 254, 1);
   //object initialization
   karateKid = new GameObject();
-  enemy1 = new Enemy(10);
+  enemy1 = new Enemy(20, 50, 50); // enemy w/ health = 20, block_chance = 50%, strength = 50%
   tileMap = new TileMap();
 
 
@@ -77,11 +77,14 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
 
 // ADDED BY KALEB
 // Tell if player is within given range to an enemy
+// returns false if enemy is dead
 bool playerAtEnemy(Enemy *enem, int range) {
-	int playerX = karateKid->getObjectXpos();
-	int enemyX = enem->getEnemyXpos();
-	int xDist = playerX - enemyX;
-	if (abs(xDist) <= range) return true;
+	if (!enem->enemyIsDead()) {
+		int playerX = karateKid->getObjectXpos();
+		int enemyX = enem->getEnemyXpos();
+		int xDist = playerX - enemyX;
+		if (abs(xDist) <= range) return true;
+	}
 	return false;
 }
 
@@ -132,11 +135,21 @@ void GameEngine::handleGameEngineEvents(){
     }
 }
 
+void doBattle(GameObject *karateKid, Enemy *enem) {
+	// if enemy has punched, decrement health
+	if (enem->enemyThrewPunch()) {
+		karateKid->alterHealth(-20);
+	} 
+}
+
 void GameEngine::updateGameEngine(SDL_Rect& cameraRect){
 
   karateKid->updateGameObject(cameraRect);
   enemy1->updateEnemy(cameraRect, karateKid->getObjectXpos());
   
+  // temp(?) function for handling battle between player and enemy
+  doBattle(karateKid, enemy1);
+  if (karateKid->getObjectHealth() <= 0) std::cout << "GAME OVER" << std::endl;
 
 }
 
