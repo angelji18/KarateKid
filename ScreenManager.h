@@ -6,13 +6,14 @@
 class ScreenManager{
     private:
         int state;
-        
+
     public:
         ScreenManager();
         ~ScreenManager();
 
         void initScreen();
         void endScreen();
+        void pauseScreen();
         void chanageState(int);
         int getState();
 };

@@ -37,8 +37,11 @@ extern const int MC_IMG_DEST;
 extern bool flag_left;
 extern int leftcount; //for left movement
 extern int rightcount; //for right movement
+extern int esccount;
 extern bool flag_right;
 extern int start; // to place the player in starting position
+
+extern bool paused;
 
 //character step on xaxis
 extern const int STEPX;

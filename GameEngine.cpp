@@ -15,9 +15,11 @@ const int LEVEL_HEIGHT = 960;
 
 bool flag_left = false;
 bool flag_right = false;
+bool paused = false;
 
 int leftcount = 0;
 int rightcount = 0;
+int esccount = 0;
 int start = 0;
 
 //object definition
@@ -116,11 +118,31 @@ void GameEngine::handleGameEngineEvents(){
               startScreen->chanageState(0);
             }
             break;
-          
+
           //TODO: temp until we have a way to end the game
           case SDLK_SPACE:
             startScreen->chanageState(2);
             break;
+
+          case SDLK_ESCAPE:
+              if(esccount == 0)
+              {
+                esccount = 1;
+              }
+              if(esccount == 1)
+              {
+                startScreen->chanageState(3);
+                paused = true;
+                esccount = 2;
+              }
+              else{
+                startScreen->chanageState(0);
+                esccount = 0;
+                paused = false;
+
+              }
+
+              break;
         }
 
       }
@@ -143,6 +165,9 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
     startScreen->initScreen();
   } else if(startScreen->getState() == 2){
     startScreen->endScreen();
+  }
+  else if(startScreen->getState() == 3){
+    startScreen->pauseScreen();
   }
   SDL_RenderPresent(renderer);
 
