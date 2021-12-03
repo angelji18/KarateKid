@@ -13,9 +13,12 @@ const int LEVEL_HEIGHT = 960;
 
  const int STEPX = 10;
 
+ SDL_Event input;
+
 bool flag_left = false;
 bool flag_right = false;
 bool flag_punch = false; // ADDED BY KALEB
+
 
 int leftcount = 0;
 int rightcount = 0;
@@ -42,7 +45,7 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
     flags = SDL_WINDOW_FULLSCREEN;
   }
 
-
+  SDL_Init(SDL_INIT_TIMER);
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
     std::cout << "Error initializing SDL: " << SDL_GetError() << std::endl;
     return 0;
@@ -53,7 +56,7 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
     std::cout << "Windown created successfully" << std::endl;
   }
 
-  renderer = SDL_CreateRenderer(window,-1,0);
+  renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
   if(renderer){
     std::cout << "Renderer created successfully" << std::endl;
   }
@@ -103,7 +106,7 @@ void GameEngine::handleGameEngineEvents(){
         switch(input.key.keysym.sym)
         {
           case SDLK_LEFT:
-            flag_left = true; 
+            flag_left = true;
             if (leftcount == 2){
               leftcount = 0;
             }
@@ -127,8 +130,11 @@ void GameEngine::handleGameEngineEvents(){
               // player has punched
               flag_punch = true;
               // if the player is within hit range, updateEnemy to react to hit
-              if (playerAtEnemy(enemy1, 70)) 
-                enemy1->setHitFlag(true); 
+              if (playerAtEnemy(enemy1, 70))
+                enemy1->setHitFlag(true);
+
+
+
           }
 
         }
@@ -139,17 +145,17 @@ void doBattle(GameObject *karateKid, Enemy *enem) {
 	// if enemy has punched, decrement health
 	if (enem->enemyThrewPunch()) {
 		karateKid->alterHealth(-20);
-	} 
+	}
 }
 
 void GameEngine::updateGameEngine(SDL_Rect& cameraRect){
 
   karateKid->updateGameObject(cameraRect);
   enemy1->updateEnemy(cameraRect, karateKid->getObjectXpos());
-  
+
   // temp(?) function for handling battle between player and enemy
   doBattle(karateKid, enemy1);
-  if (karateKid->getObjectHealth() <= 0) std::cout << "GAME OVER" << std::endl;
+  if (karateKid->getObjectHealth() <= 0) {}//std::cout << "GAME OVER" << std::endl;
 
 }
 
@@ -160,6 +166,8 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
   tileMap->drawTileMap(cameraRect);
   karateKid->renderGameObject(cameraRect);
   enemy1->renderEnemy(cameraRect);
+
+
   SDL_RenderPresent(renderer);
 
 }
