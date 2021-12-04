@@ -98,7 +98,7 @@ void Enemy::updateEnemy(SDL_Rect& cameraRect, int playerX){
 			  	health -= 5;
 			  	if (health <= 0) isDead = true;
 			  	//std::cout << "HEALTH: " << health << std::endl;
-			  }
+			  } else flag = 4;
 			  isHit = false;
 		  } else {
 			  // if MC within range, follow keeping 50 sprites away

@@ -18,6 +18,7 @@ const int LEVEL_HEIGHT = 960;
 bool flag_left = false;
 bool flag_right = false;
 bool flag_punch = false; // ADDED BY KALEB
+bool flag_hit = false; // ADDED BY KALEB
 
 bool paused = false;
 
@@ -181,6 +182,7 @@ void doBattle(GameObject *karateKid, Enemy *enem) {
 	// if enemy has punched, decrement health
 	if (enem->enemyThrewPunch()) {
 		karateKid->alterHealth(-20);
+		flag_hit = true;
 	}
 }
 

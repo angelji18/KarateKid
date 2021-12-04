@@ -101,6 +101,10 @@ void SpriteManager::updateSprite(){
       	flag_punch = false;
       	//std::cout << "Flag punch set false" << std::endl;
       }
+      else if (flag_hit == true) {
+      	srcRect.x = MC_IMG_SRC*8;
+      	flag_hit = false;
+      }
 
 
     }

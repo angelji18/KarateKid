@@ -16,7 +16,7 @@ GameObject::~GameObject(){
 
 void GameObject::initGameObject()
 {
-  spriteManager = new SpriteManager("assets/KK_MC.png",0,0);
+  spriteManager = new SpriteManager("assets/KK_MC2.png",0,0);
 }
 
 void GameObject::updateGameObject(SDL_Rect& cameraRect){
