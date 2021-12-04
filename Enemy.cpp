@@ -10,6 +10,10 @@ bool isHit = false;
 bool isDead = false;
 
 int last_rand; // ensure same number doesn't happen twice in a row
+int flag = 0; // for state
+
+Uint32 startAnimTimer; // timer for the animations
+Uint32 endAnimTimer;
 
 
 // strength is the % chance to attempt to hit the player
@@ -19,6 +23,9 @@ Enemy::Enemy(int health, int block_chance, int strength){
 	this->strength = strength;
 	
 	punching = false;
+	startAnimTimer = 0;
+	endAnimTimer = 2000;
+	flag = 0;
 }
 
 Enemy::~Enemy(){
@@ -76,40 +83,45 @@ bool Enemy::blocked(int &flag) {
 // 4 - block
 // 5 - punch
 void Enemy::updateEnemy(SDL_Rect& cameraRect, int playerX){
-  int flag = 0;
   int step = 0;
+  punching = false;
+  endAnimTimer = SDL_GetTicks();
   if (!isDead) {
-	  // if isHit == true, react to hit
-	  if (isHit) {
-	  	if (!blocked(flag)) {
-	  		//std::cout << "NOT BLOCKED" << std::endl;
-		  	flag = 2;
-		  	step = 0;
-		  	health -= 5;
-		  	if (health <= 0) isDead = true;
-		  	//std::cout << "HEALTH: " << health << std::endl;
-		  }
-		  isHit = false;
-	  } else {
-		  // if MC within range, follow keeping 50 sprites away
-		  isAlert = objectDetected(playerX, 250);
-		  if (isAlert) { 
-		  	//std::cout << "ALERT" << std::endl;
-		  	flag = 1;
-		  	// check if within hitting range
-		  	// if not, move to player
-		  	if (withinHitRange(playerX)) {
-		  		// enter fight loop
-		  		if (hitPlayer(flag)) {
-		  			std::cout << "THROW PUNCH" << std::endl;
-		  			punching = true;
-		  		} else punching = false;
-		  		
-		  	} else {
-		  		// move to player
-		  		if (getEnemyXpos() - playerX < 0) step = 5;
-		  		else step = -5;
-		  	}
+  	  if (endAnimTimer >= startAnimTimer + 300) {
+		  // if isHit == true, react to hit
+		  if (isHit) {
+		       startAnimTimer = SDL_GetTicks();
+		  	if (!blocked(flag)) {
+		  		//std::cout << "NOT BLOCKED" << std::endl;
+			  	flag = 2;
+			  	step = 0;
+			  	health -= 5;
+			  	if (health <= 0) isDead = true;
+			  	//std::cout << "HEALTH: " << health << std::endl;
+			  }
+			  isHit = false;
+		  } else {
+			  // if MC within range, follow keeping 50 sprites away
+			  isAlert = objectDetected(playerX, 250);
+			  if (isAlert) { 
+			  	//std::cout << "ALERT" << std::endl;
+			  	flag = 1;
+			  	// check if within hitting range
+			  	// if not, move to player
+			  	if (withinHitRange(playerX)) {
+			  		// enter fight loop
+			  		if (hitPlayer(flag)) {
+			  			startAnimTimer = SDL_GetTicks();
+			  			std::cout << "THROW PUNCH" << std::endl;
+			  			punching = true;
+			  		}
+			  		
+			  	} else {
+			  		// move to player
+			  		if (getEnemyXpos() - playerX < 0) step = 5;
+			  		else step = -5;
+			  	}
+			  }
 		  }
 	  }
   } else flag = 3;

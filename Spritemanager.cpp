@@ -5,6 +5,8 @@ int check = 0;
 int lastPosition; // ADDED BY KALEB - last position of the srcRect
 int lastSecond = 0; // ADDED BY KALEB - for timing animations
 
+Uint32 startPunchTimer; // ADDED BY KALEB
+Uint32 endPunchTimer; // ADDED BY KALEB
 
 
 bool punchAction_flag = 0 ;
@@ -15,6 +17,8 @@ SpriteManager::SpriteManager(const char* texture,int x, int y)
   objTexture = TextureManager::loadTexture(texture);
   xpos = x;
   ypos = y;
+  startPunchTimer = 0;
+  endPunchTimer = 300;
 }
 
 SpriteManager::~SpriteManager()
@@ -54,6 +58,7 @@ void SpriteManager::updateSprite(){
       else if(flag_left == true){
         if(leftcount == 0){
           srcRect.x = 1200;
+          std::cout << "SET TO 1200" << std::endl;
         }
         else{
           srcRect.x = 800;
@@ -66,7 +71,7 @@ void SpriteManager::updateSprite(){
 
       // ADDED BY KALEB
       else if (flag_punch == true) {
-      	// lastPosition = srcRect.x; // save lastPosition (don't stay on fight anim)
+      	//lastPosition = srcRect.x; // save lastPosition (don't stay on fight anim)
         //
       	// lastSecond = SDL_GetTicks() / 500;
         // gSpriteClips[ 0 ].x =   2800;
@@ -90,6 +95,7 @@ void SpriteManager::updateSprite(){
         // gSpriteClips[ 3 ].h = MC_IMG_SRC;
 
         punchAction_flag = 1;
+        startPunchTimer = SDL_GetTicks();
 
       	 srcRect.x = 2800;
       	flag_punch = false;
@@ -129,6 +135,7 @@ void SpriteManager::updateEnemySprite(int flag, int step) {
 		srcRect.y = 0;
 		srcRect.x = 1600;
 		xpos = SpriteManager::getCharacterXpos();
+		//lastPosition = srcRect.x;
 	}
 	// if moving
 	if (flag == 1) {
@@ -142,6 +149,7 @@ void SpriteManager::updateEnemySprite(int flag, int step) {
 			srcRect.x = 1600;
 		}
 		xpos = SpriteManager::getCharacterXpos() + step;
+		//lastPosition = srcRect.x;
 	}
 	// if hit
 	// show red
@@ -201,7 +209,14 @@ void SpriteManager::renderSprite(SDL_Rect& camera )
   else{
    TextureManager::renderTexture(999, destRect.x-camera.x, destRect.y ,objTexture, &srcRect);
  }*/
- TextureManager::renderTexture(999, destRect.x-camera.x, destRect.y ,objTexture, &srcRect);
+   /*if (punchAction_flag == 1) {
+       endPunchTimer = SDL_GetTicks();
+   	if (endPunchTimer >= startPunchTimer + 300) {
+   		TextureManager::renderTexture(999, destRect.x-camera.x, destRect.y ,objTexture, &srcRect);
+   		srcRect.x = lastPosition;
+   	}
+   } */
+   TextureManager::renderTexture(999, destRect.x-camera.x, destRect.y ,objTexture, &srcRect);
    //std::cout << destRect.x-camera.x << ", " << destRect.y << std::endl;
 
    // ADDED BY KALEB
