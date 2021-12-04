@@ -4,17 +4,22 @@
 
 
 #include "GameEngine.h"
-
+#include "SpriteManager.h"
 extern SDL_Rect cameraRect;
+
+class SpriteManager;
 
 class Enemy{
   public:
     Enemy(int health, int block_chance, int strength);
     ~Enemy();
 
-    void initEnemy();
+    void initEnemy(int xLoc); 
     void updateEnemy(SDL_Rect& cameraRect, int playerX);
     void renderEnemy(SDL_Rect& cameraRect);
+    
+    // temp
+    void setHealth(int health);
 
     // ADDED FOR ENEMY COLLISION
     int getEnemyXpos();
@@ -35,6 +40,24 @@ class Enemy{
     bool punching;
     
     bool hitPlayer(int &flag); // try to hit player
+    
+    bool objectDetected(int playerX, int range);
+    
+    bool withinHitRange(int playerX);
+    
+    SpriteManager *enemySpriteManager;
+    
+    bool isAlert;
+    bool isHit;
+    bool isDead;
+
+    int last_rand; // ensure same number doesn't happen twice in a row
+    int flag; // for state
+
+    Uint32 startAnimTimer; // timer for the animations
+    Uint32 endAnimTimer;
+
+    
 
 };
 

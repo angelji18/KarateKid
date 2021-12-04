@@ -28,13 +28,18 @@ int rightcount = 0;
 int esccount = 0;
 int start = 0;
 
+int enemyCount = 3;
+
 //object definition
 TileMap *tileMap = NULL;
 GameObject *karateKid = NULL;
 Enemy *enemy1 = NULL;
+Enemy *enemy2 = NULL;
+Enemy *enemy3 = NULL;
 SDL_Renderer* GameEngine::renderer = NULL;
 ScreenManager *startScreen = NULL;
 
+Enemy *enemies[2];
 
 
 GameEngine::GameEngine(){
@@ -70,14 +75,34 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
 
 
   SDL_SetRenderDrawColor(renderer, 192, 238, 254, 1);
+  
+  
   //object initialization
   karateKid = new GameObject();
-  enemy1 = new Enemy(20, 50, 50); // enemy w/ health = 20, block_chance = 50%, strength = 50%
+  
+  // make new sprite manager special for enemies
+  enemy1 = new Enemy(10, 20, 20); // enemy w/ health = 10, block_chance = 20%, strength = 50%
+  std::cout << enemy1 << std::endl;
+  enemy2 = new Enemy(20, 30, 30); // enemy w/ health = 20, block_chance = 30%, strength = 50%
+  std::cout << enemy2 << std::endl;
+  enemy3 = new Enemy(20, 40, 40); // enemy w/ health = 20, block_chance = 40%, strength = 40%
   tileMap = new TileMap();
 
 
   karateKid->initGameObject();
-  enemy1->initEnemy();
+  enemy1->initEnemy(500);
+  enemy2->initEnemy(900);
+  enemy3->initEnemy(1400);
+  
+  enemy1->setHealth(15);
+  enemy2->setHealth(30);
+  enemy3->setHealth(40);
+  
+  // put enemies into container (array)
+  enemies[0] = enemy1;
+  enemies[1] = enemy2;
+  enemies[2] = enemy3;
+  
 
 
   return 0;
@@ -125,7 +150,8 @@ void GameEngine::handleGameEngineEvents(){
 
           case SDLK_RIGHT:
               if(startScreen->getState() == 0){
-		      if (playerAtEnemy(enemy1, 50)) flag_right = false; // added
+                     for (int i = 0; i < enemyCount; i++)
+		      	if (playerAtEnemy(enemies[i], 50)) flag_right = false; // added
 		      else flag_right = true; // modified
 		      if (rightcount == 2){
 		        rightcount = 0;
@@ -145,8 +171,10 @@ void GameEngine::handleGameEngineEvents(){
               // player has punched
               flag_punch = true;
               // if the player is within hit range, updateEnemy to react to hit
-              if (playerAtEnemy(enemy1, 70))
-                enemy1->setHitFlag(true);
+              for (int i = 0; i < enemyCount; i++) {
+		      if (playerAtEnemy(enemies[i], 70))
+		        enemies[i]->setHitFlag(true);
+	      }
               break;
               
            case SDLK_ESCAPE:
@@ -198,11 +226,11 @@ void GameEngine::updateGameEngine(SDL_Rect& cameraRect){
   	  if (karateKid->isDead()) gameOver();
   	  else {
 		  karateKid->updateGameObject(cameraRect);
-		  enemy1->updateEnemy(cameraRect, karateKid->getObjectXpos());
-
-		  // temp(?) function for handling battle between player and enemy
-		  doBattle(karateKid, enemy1);
-		  if (karateKid->getObjectHealth() <= 0) {}//std::cout << "GAME OVER" << std::endl;
+		  //enemy1->updateEnemy(cameraRect, karateKid->getObjectXpos());
+		  for (int i = 0; i < enemyCount; i++) {
+		  	enemies[i]->updateEnemy(cameraRect, karateKid->getObjectXpos());
+		  	doBattle(karateKid, enemies[i]); // temp(?) function for handling battle between player and enemy
+		  }
 	  }
   }
 }
@@ -213,7 +241,10 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
   tileMap->drawTileMap(cameraRect);
   startScreen->displayHealth(karateKid->getObjectHealth());
   karateKid->renderGameObject(cameraRect);
-  enemy1->renderEnemy(cameraRect);
+  //enemy1->renderEnemy(cameraRect);
+  for (int i = 0; i < enemyCount; i++) {
+  	enemies[i]->renderEnemy(cameraRect);
+  }
   
   /* screen manager actions */
   if(startScreen->getState() == 1){

@@ -1,9 +1,10 @@
 #include "Enemy.h"
+#include "SpriteManager.h"
 #include <math.h>
 
 //SDL_Rect cameraRect;
 
-SpriteManager *enemySpriteManager = NULL;
+//SpriteManager *enemySpriteManager = NULL;
 
 bool isAlert = false;
 bool isHit = false;
@@ -26,19 +27,37 @@ Enemy::Enemy(int health, int block_chance, int strength){
 	startAnimTimer = 0;
 	endAnimTimer = 2000;
 	flag = 0;
+	
+	enemySpriteManager = NULL; // TEMP?
+	
+	isAlert = false;
+	isHit = false;
+	isDead = false;
+
+	flag = 0; // for state
 }
 
 Enemy::~Enemy(){
 
 }
 
-void Enemy::initEnemy()
+// TEMP
+void Enemy::setHealth(int health) {
+	this->health = health;
+	std::cout << this << " , health: " << this->health << std::endl;
+}
+
+// ADDED SPRITEMANAGER
+void Enemy::initEnemy(int xLoc)
 {
-  enemySpriteManager = new SpriteManager("assets/KK_ENEMY1_HIT2.png",500,0);
+  std::cout << "INIT : " << this << " RENDERER : " << enemySpriteManager << std::endl;
+  enemySpriteManager = new SpriteManager("assets/KK_ENEMY1_HIT2.png",xLoc,0);
+  std::cout << "INIT : " << this << " RENDERER : " << enemySpriteManager << std::endl;
+  
 }
 
 // Detects if a given game object is within the given range
-bool objectDetected(int playerX, int range) {
+bool Enemy::objectDetected(int playerX, int range) {
 	bool detected = false;
 	int xDist = enemySpriteManager->getCharacterXpos() - playerX;
 	if (abs(xDist) <= range) detected = true;
@@ -46,7 +65,7 @@ bool objectDetected(int playerX, int range) {
 }
 
 // checks if playerX is within hit range
-bool withinHitRange(int playerX) {
+bool Enemy::withinHitRange(int playerX) {
 	int xDist = enemySpriteManager->getCharacterXpos() - playerX;
 	return (abs(xDist) <= 100); // temp
 }
@@ -83,6 +102,7 @@ bool Enemy::blocked(int &flag) {
 // 4 - block
 // 5 - punch
 void Enemy::updateEnemy(SDL_Rect& cameraRect, int playerX){
+  std::cout << this << " UPDATE: " << this->health << std::endl;
   int step = 0;
   punching = false;
   endAnimTimer = SDL_GetTicks();
@@ -132,7 +152,7 @@ void Enemy::updateEnemy(SDL_Rect& cameraRect, int playerX){
 
 
 void Enemy::renderEnemy(SDL_Rect& cameraRect){
-  //std::cout << "ENEMY: ";
+  std::cout << this << " RENDERER: " << enemySpriteManager << std::endl;
   enemySpriteManager -> renderSprite(cameraRect);
 }
 
