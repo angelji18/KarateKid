@@ -211,6 +211,7 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
 
   SDL_RenderClear(renderer);
   tileMap->drawTileMap(cameraRect);
+  startScreen->displayHealth(karateKid->getObjectHealth());
   karateKid->renderGameObject(cameraRect);
   enemy1->renderEnemy(cameraRect);
   
@@ -223,7 +224,11 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
   else if(startScreen->getState() == 3){
     startScreen->pauseScreen();
   }
+  
+  //startScreen->displayHealth(100);
   /* end screen manager actions */
+  
+  
 
   SDL_RenderPresent(renderer);
 

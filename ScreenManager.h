@@ -15,6 +15,7 @@ class ScreenManager{
         void endScreen();
         void pauseScreen();
         void chanageState(int);
+        void displayHealth(int health); // ADDED BY KALEB
         int getState();
 };
 
