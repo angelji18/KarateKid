@@ -1,5 +1,6 @@
 #include "ScreenManager.h"
 
+
 ScreenManager::ScreenManager(){
     state = 1;
 }
@@ -40,6 +41,7 @@ void ScreenManager::initScreen(){
         SDL_Rect title_dest = {200, 150, 500, 100};
         SDL_RenderCopy(GameEngine::renderer, my_texture, NULL, &title_dest);
         SDL_FreeSurface(temp);
+        TTF_CloseFont(font);
 
         font = TTF_OpenFont("assets/arcadeclassic.regular.ttf", 15);
         SDL_Color gold = {245, 200, 66};
@@ -48,6 +50,7 @@ void ScreenManager::initScreen(){
         SDL_Rect text_dest = {100, 400, 600, 50};
         SDL_RenderCopy(GameEngine::renderer, my_texture, NULL, &text_dest);
         SDL_FreeSurface(temp);
+        TTF_CloseFont(font);
     }
 
 }
@@ -69,6 +72,7 @@ void ScreenManager::endScreen(){
 
         SDL_SetRenderDrawColor(GameEngine::renderer, 192, 238, 254, 1);
         SDL_FreeSurface(temp);
+        TTF_CloseFont(font);
     }
 }
 
@@ -89,6 +93,7 @@ void ScreenManager::pauseScreen(){
 
         SDL_SetRenderDrawColor(GameEngine::renderer, 192, 238, 254, 1);
         SDL_FreeSurface(temp);
+        TTF_CloseFont(font);
 
         font = TTF_OpenFont("assets/arcadeclassic.regular.ttf", 15);
         SDL_Color white = {255, 255, 255};
@@ -97,5 +102,6 @@ void ScreenManager::pauseScreen(){
         SDL_Rect text_dest = {100, 400, 600, 50};
         SDL_RenderCopy(GameEngine::renderer, my_texture, NULL, &text_dest);
         SDL_FreeSurface(temp);
+        TTF_CloseFont(font);
     }
 }

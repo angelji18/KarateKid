@@ -10,7 +10,9 @@ public:
 
 
   void updateSprite();
+  void updateEnemySprite(int flag, int step); // ADDED FOR ENEMY
   void renderSprite(SDL_Rect& cameraRect);
+  
 
   //Position accessors
   int getCharacterXpos();

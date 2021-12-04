@@ -7,7 +7,7 @@ SpriteManager *spriteManager = NULL;
 
 
 GameObject::GameObject(){
-
+	health = 100; // ADDED BY KALEB
 }
 
 GameObject::~GameObject(){
@@ -28,7 +28,7 @@ void GameObject::updateGameObject(SDL_Rect& cameraRect){
 
 
 void GameObject::renderGameObject(SDL_Rect& cameraRect){
-
+  //std::cout << "MC: ";
   spriteManager -> renderSprite(cameraRect);
 }
 
@@ -58,3 +58,29 @@ void GameObject::setCamera( SDL_Rect& cameraRect )
     }
 
 }
+
+int GameObject::getObjectXpos() {
+	return spriteManager->getCharacterXpos();
+}
+
+int GameObject::getObjectYpos() {
+	return spriteManager->getCharacterYpos();
+}
+
+int GameObject::getObjectHealth() {
+	return health;
+}
+
+// increment/decrement health by given value
+void GameObject::alterHealth(int val) {
+	health += val;
+	std::cout << "HEALTH NOW: " << health << std::endl;
+}
+
+// returns true if health <= 0
+bool GameObject::isDead() {
+	return (health <= -0);
+}
+
+
+

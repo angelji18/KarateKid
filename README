@@ -5,11 +5,6 @@ cameraRect.x and cameraRect.y hold the screen's center position values with resp
 these values are then subtracted from the actual coordinate position of the PC/tile so as to render visible area.
 
 
-To run a fresh instance:
+To Run:
 make
-To compile:
-make compile
-To clean:
-make clean
-To run the existing executable:
-make run
+./a.out
