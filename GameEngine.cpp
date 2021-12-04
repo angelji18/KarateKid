@@ -39,7 +39,7 @@ Enemy *enemy3 = NULL;
 SDL_Renderer* GameEngine::renderer = NULL;
 ScreenManager *startScreen = NULL;
 
-Enemy *enemies[2];
+Enemy *enemies[3];
 
 
 GameEngine::GameEngine(){
