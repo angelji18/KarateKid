@@ -19,9 +19,12 @@ bool flag_left = false;
 bool flag_right = false;
 bool flag_punch = false; // ADDED BY KALEB
 
+bool paused = false;
+
 
 int leftcount = 0;
 int rightcount = 0;
+int esccount = 0;
 int start = 0;
 
 //object definition
@@ -29,6 +32,7 @@ TileMap *tileMap = NULL;
 GameObject *karateKid = NULL;
 Enemy *enemy1 = NULL;
 SDL_Renderer* GameEngine::renderer = NULL;
+ScreenManager *startScreen = NULL;
 
 
 
@@ -60,6 +64,7 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   if(renderer){
     std::cout << "Renderer created successfully" << std::endl;
   }
+  startScreen = new ScreenManager();
   isRunning =true;
 
 
@@ -106,25 +111,34 @@ void GameEngine::handleGameEngineEvents(){
         switch(input.key.keysym.sym)
         {
           case SDLK_LEFT:
-            flag_left = true;
-            if (leftcount == 2){
-              leftcount = 0;
-            }
-            else{
-              leftcount++;
-            }
-            break;
+            if(startScreen->getState() == 0){
+		    flag_left = true;
+		    if (leftcount == 2){
+		      leftcount = 0;
+		    }
+		    else{
+		      leftcount++;
+		    }
+	     }
+	     break;
 
           case SDLK_RIGHT:
-              if (playerAtEnemy(enemy1, 50)) flag_right = false; // added
-              else flag_right = true; // modified
-              if (rightcount == 2){
-                rightcount = 0;
-              }
-              else{
-                rightcount++;
+              if(startScreen->getState() == 0){
+		      if (playerAtEnemy(enemy1, 50)) flag_right = false; // added
+		      else flag_right = true; // modified
+		      if (rightcount == 2){
+		        rightcount = 0;
+		      }
+		      else{
+		        rightcount++;
+		      }
               }
               break;
+           case SDLK_RETURN:
+            if(startScreen->getState() == 1){
+              startScreen->chanageState(0);
+            }
+            break;
            // ADDED BY KALEB
            case SDLK_SPACE:
               // player has punched
@@ -132,6 +146,27 @@ void GameEngine::handleGameEngineEvents(){
               // if the player is within hit range, updateEnemy to react to hit
               if (playerAtEnemy(enemy1, 70))
                 enemy1->setHitFlag(true);
+              break;
+              
+           case SDLK_ESCAPE:
+              if(esccount == 0)
+              {
+                esccount = 1;
+              }
+              if(esccount == 1)
+              {
+                startScreen->chanageState(3);
+                paused = true;
+                esccount = 2;
+              }
+              else{
+                startScreen->chanageState(0);
+                esccount = 0;
+                paused = false;
+
+              }
+
+              break;
 
 
 
@@ -150,23 +185,33 @@ void doBattle(GameObject *karateKid, Enemy *enem) {
 
 void GameEngine::updateGameEngine(SDL_Rect& cameraRect){
 
-  karateKid->updateGameObject(cameraRect);
-  enemy1->updateEnemy(cameraRect, karateKid->getObjectXpos());
+  if (!paused) {
+	  karateKid->updateGameObject(cameraRect);
+	  enemy1->updateEnemy(cameraRect, karateKid->getObjectXpos());
 
-  // temp(?) function for handling battle between player and enemy
-  doBattle(karateKid, enemy1);
-  if (karateKid->getObjectHealth() <= 0) {}//std::cout << "GAME OVER" << std::endl;
-
+	  // temp(?) function for handling battle between player and enemy
+	  doBattle(karateKid, enemy1);
+	  if (karateKid->getObjectHealth() <= 0) {}//std::cout << "GAME OVER" << std::endl;
+  }
 }
 
 void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
-
 
   SDL_RenderClear(renderer);
   tileMap->drawTileMap(cameraRect);
   karateKid->renderGameObject(cameraRect);
   enemy1->renderEnemy(cameraRect);
-
+  
+  /* screen manager actions */
+  if(startScreen->getState() == 1){
+    startScreen->initScreen();
+  } else if(startScreen->getState() == 2){
+    startScreen->endScreen();
+  }
+  else if(startScreen->getState() == 3){
+    startScreen->pauseScreen();
+  }
+  /* end screen manager actions */
 
   SDL_RenderPresent(renderer);
 

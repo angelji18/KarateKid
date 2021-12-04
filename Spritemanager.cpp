@@ -188,19 +188,20 @@ void SpriteManager::renderSprite(SDL_Rect& camera )
   }
   //when the punch action flag is activated the below code captures the current time and renders the punch texture
   //for 2 seconds
-  if(punchAction_flag ==1){
+  /*if(punchAction_flag ==1){
     int max = SDL_GetTicks()+2000;
 
-    for(int i = SDL_GetTicks(); i <= max; i++){
-      
+    for(int i = SDL_GetTicks(); i < max; i++){
+      std::cout << max << " " << i << std::endl;
       TextureManager::renderTexture(999, destRect.x-camera.x, destRect.y ,objTexture, &srcRect);
     }
-      punchAction_flag=0;
 
+      punchAction_flag=0;
   }
   else{
    TextureManager::renderTexture(999, destRect.x-camera.x, destRect.y ,objTexture, &srcRect);
- }
+ }*/
+ TextureManager::renderTexture(999, destRect.x-camera.x, destRect.y ,objTexture, &srcRect);
    //std::cout << destRect.x-camera.x << ", " << destRect.y << std::endl;
 
    // ADDED BY KALEB
