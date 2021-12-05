@@ -31,7 +31,7 @@ void ScreenManager::initScreen(){
         SDL_RenderCopy(GameEngine::renderer, my_texture, &src, &dst);
 
         // reset
-        SDL_SetRenderDrawColor(GameEngine::renderer, 192, 238, 254, 1);
+        SDL_SetRenderDrawColor(GameEngine::renderer, 45, 180, 243, 1);
         TTF_Init();
 
         TTF_Font* font = TTF_OpenFont("assets/arcadeclassic.regular.ttf", 50);
@@ -70,7 +70,7 @@ void ScreenManager::endScreen(){
         SDL_Rect title_dest = {175, 250, 500, 100};
         SDL_RenderCopy(GameEngine::renderer, my_texture, NULL, &title_dest);
 
-        SDL_SetRenderDrawColor(GameEngine::renderer, 192, 238, 254, 1);
+        SDL_SetRenderDrawColor(GameEngine::renderer, 45, 180, 243, 1);
         SDL_FreeSurface(temp);
         TTF_CloseFont(font);
     }
@@ -92,7 +92,7 @@ void ScreenManager::pauseScreen(){
         SDL_Rect title_dest = {175, 250, 500, 100};
         SDL_RenderCopy(GameEngine::renderer, my_texture, NULL, &title_dest);
 
-        SDL_SetRenderDrawColor(GameEngine::renderer, 192, 238, 254, 1);
+        SDL_SetRenderDrawColor(GameEngine::renderer, 45, 180, 243, 1);
         SDL_FreeSurface(temp);
         TTF_CloseFont(font);
 
@@ -123,7 +123,7 @@ void ScreenManager::winScreen(){
         SDL_Rect title_dest = {175, 250, 500, 100};
         SDL_RenderCopy(GameEngine::renderer, my_texture, NULL, &title_dest);
 
-        SDL_SetRenderDrawColor(GameEngine::renderer, 192, 238, 254, 1);
+        SDL_SetRenderDrawColor(GameEngine::renderer, 45, 180, 243, 1);
         SDL_FreeSurface(temp);
         TTF_CloseFont(font);
     }
@@ -158,7 +158,8 @@ void ScreenManager::displayHealth(int health) {
         SDL_RenderCopy(GameEngine::renderer, my_texture, NULL, &title_dest);
         
         // cleanup
-        SDL_SetRenderDrawColor(GameEngine::renderer, 192, 238, 254, 1);
+        //SDL_SetRenderDrawColor(GameEngine::renderer, 192, 238, 254, 1);
+        SDL_SetRenderDrawColor(GameEngine::renderer, 45, 180, 243, 1);
         SDL_FreeSurface(temp);
         TTF_CloseFont(font);
 
