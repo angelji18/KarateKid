@@ -4,7 +4,7 @@
 
 class SpriteManager{
 
-public:
+  public:
 
   SpriteManager(const char* texture, int x, int y);
   ~SpriteManager();
