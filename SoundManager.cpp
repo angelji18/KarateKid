@@ -7,6 +7,11 @@ Mix_Chunk *steps[3];
 Mix_Chunk *deaths[3];
 Mix_Chunk *alerts[3];
 Mix_Chunk *blocks[2];
+Mix_Chunk *lose = NULL;
+Mix_Chunk *win = NULL;
+
+Mix_Music *startingMusic = NULL;
+Mix_Music *world = NULL;
 
 SoundManager::SoundManager(){
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
@@ -28,17 +33,16 @@ SoundManager::SoundManager(){
     
     blocks[0] = Mix_LoadWAV("assets/sounds/block2.wav");
     blocks[1] = Mix_LoadWAV("assets/sounds/block3.wav");
+    
+    lose = Mix_LoadWAV("assets/sounds/Lose.wav");
+    win = Mix_LoadWAV("assets/sounds/Win.wav");
+    
+    startingMusic = Mix_LoadMUS("assets/sounds/Start.wav");
+    world = Mix_LoadMUS("assets/sounds/World.wav");
 }
 
 SoundManager::~SoundManager() {
 
-}
-
-void playWalk() {
-	
-	
-	
-	
 }
 
 /* Flag table:
@@ -47,6 +51,8 @@ void playWalk() {
 3 - walk
 4 - enemy alert
 5 - enemy block
+6 - lose jingle
+7 - win jingle
 */
 void SoundManager::playSound(int flag) {
 	switch (flag) {
@@ -70,12 +76,50 @@ void SoundManager::playSound(int flag) {
 			srand(time(NULL));
 			Mix_PlayChannel(-1, blocks[rand()%2], 0); // play random block
 			break;
+		case 6 :
+			Mix_PlayChannel(-1, lose, 0);
+			break;
+		case 7 :
+			Mix_PlayChannel(-1, win, 0);
+			break;
 	}
+}
+
+/* Flag table:
+1 - starting music
+2 - world music
+*/
+void SoundManager::playMusic(int flag) {
+	switch (flag) {
+		case 1:
+			Mix_PlayMusic(startingMusic, -1);
+			break;
+		case 2:
+			Mix_PlayMusic(world, -1);
+			break;
+	}
+}
+
+void SoundManager::pauseMusic() {
+	Mix_PauseMusic();
+} 
+
+void SoundManager::resumeMusic() {
+	Mix_ResumeMusic();
+}
+
+void SoundManager::stopMusic() {
+	Mix_HaltMusic();
 }
 
 void SoundManager::closeSoundManager() {
 	Mix_FreeChunk(death);
 	Mix_FreeChunk(hit);
+	// TODO: free all chunks
+	Mix_FreeMusic(startingMusic);
+	Mix_FreeMusic(world);
+	startingMusic = NULL;
+	world = NULL;
 	Mix_Quit();
 }
 

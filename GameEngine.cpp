@@ -112,7 +112,7 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   
   // init sound
   sound = new SoundManager();
-
+  sound->playMusic(1);
 
   return 0;
 }
@@ -174,7 +174,9 @@ void GameEngine::handleGameEngineEvents(){
               break;
            case SDLK_RETURN:
             if(startScreen->getState() == 1){
+              sound->stopMusic();
               startScreen->chanageState(0);
+              sound->playMusic(2);
             }
             break;
            // ADDED BY KALEB
@@ -227,13 +229,17 @@ void doBattle(GameObject *karateKid, Enemy *enem) {
 
 // ADDED BY KALEB
 void gameOver() {
+	sound->stopMusic();
 	startScreen->chanageState(2);
+	sound->playSound(6);
 	paused = true;
 }
 
 // ADDED BY KALEB
 void win() {
+	sound->stopMusic();
 	startScreen->chanageState(4);
+	sound->playSound(7);
 	paused = true;
 }
 

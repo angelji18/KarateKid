@@ -12,6 +12,10 @@ class SoundManager{
         ~SoundManager();
         
         void playSound(int flag);
+        void playMusic(int flag);
+        void pauseMusic();
+        void resumeMusic();
+        void stopMusic();
         
         void closeSoundManager();
 
