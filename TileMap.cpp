@@ -1,6 +1,6 @@
 #include "TileMap.h"
 
-//1-sky,2-plant1,3-plant2,4-plant3,5-ground
+//1-sky,2-cloud,3-plant,4-rock,5-ground
 
 int lvl1[4][25]={
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},

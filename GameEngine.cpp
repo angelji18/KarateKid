@@ -76,7 +76,7 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   isRunning =true;
 
 
-  SDL_SetRenderDrawColor(renderer, 192, 238, 254, 1);
+  SDL_SetRenderDrawColor(renderer, 43, 181, 243, 1);
   
   
   //object initialization
