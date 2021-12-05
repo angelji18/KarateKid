@@ -8,7 +8,8 @@
 #include <string.h>
 extern SDL_Rect cameraRect;
 
-class SpriteManager;
+class SpriteManager; // forward-declaration to use SpriteManager types
+class SoundManager; // forward-declaration to use SoundManager types
 
 class Enemy{
   public:
@@ -47,6 +48,8 @@ class Enemy{
     bool withinHitRange(int playerX);
     
     SpriteManager *enemySpriteManager;
+    
+    SoundManager *enemySoundManager;
     
     bool isAlert;
     bool isHit;

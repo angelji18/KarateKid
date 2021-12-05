@@ -40,6 +40,7 @@ Enemy *enemy3 = NULL;
 Enemy *boss = NULL;
 SDL_Renderer* GameEngine::renderer = NULL;
 ScreenManager *startScreen = NULL;
+SoundManager *sound = NULL;
 
 Enemy *enemies[4];
 
@@ -76,7 +77,7 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   isRunning =true;
 
 
-  SDL_SetRenderDrawColor(renderer, 43, 181, 243, 1);
+  SDL_SetRenderDrawColor(renderer, 192, 238, 254, 1);
   
   
   //object initialization
@@ -84,9 +85,9 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   
   
   enemy1 = new Enemy(15, 20, 20); // enemy w/ health = 10, block_chance = 20%, strength = 50%
-  std::cout << enemy1 << std::endl;
+  //std::cout << enemy1 << std::endl;
   enemy2 = new Enemy(20, 30, 30); // enemy w/ health = 20, block_chance = 30%, strength = 50%
-  std::cout << enemy2 << std::endl;
+  //std::cout << enemy2 << std::endl;
   enemy3 = new Enemy(20, 40, 40); // enemy w/ health = 20, block_chance = 40%, strength = 40%
   boss = new Enemy(30, 50, 50); // enemy w/ health = 30, block_chance = 50%, strength = 50%
   
@@ -108,6 +109,9 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   enemies[2] = enemy3;
   enemies[3] = boss;
   
+  
+  // init sound
+  sound = new SoundManager();
 
 
   return 0;
@@ -157,7 +161,9 @@ void GameEngine::handleGameEngineEvents(){
               if(startScreen->getState() == 0){
                      for (int i = 0; i < enemyCount; i++)
 		      	if (playerAtEnemy(enemies[i], 50)) flag_right = false; // added
-		      else flag_right = true; // modified
+		      else { 
+		      	flag_right = true; // modified
+		      }
 		      if (rightcount == 2){
 		        rightcount = 0;
 		      }
@@ -285,6 +291,7 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
 
 void GameEngine::cleanGameEngine()
 {
+  sound->closeSoundManager();
   SDL_DestroyWindow(window);
   SDL_DestroyRenderer(renderer);
   SDL_Quit();

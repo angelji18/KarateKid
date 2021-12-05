@@ -30,6 +30,7 @@ Enemy::Enemy(int health, int block_chance, int strength){
 	flag = 0;
 	
 	enemySpriteManager = NULL; // TEMP?
+	enemySoundManager = NULL;
 	
 	isAlert = false;
 	isHit = false;
@@ -51,9 +52,10 @@ void Enemy::setHealth(int health) {
 // ADDED SPRITEMANAGER
 void Enemy::initEnemy(int xLoc, const char *sprite)
 {
-  std::cout << "INIT : " << this << " RENDERER : " << enemySpriteManager << std::endl;
+  //std::cout << "INIT : " << this << " RENDERER : " << enemySpriteManager << std::endl;
   enemySpriteManager = new SpriteManager(sprite,xLoc,0);
-  std::cout << "INIT : " << this << " RENDERER : " << enemySpriteManager << std::endl;
+  enemySoundManager = new SoundManager();
+  //std::cout << "INIT : " << this << " RENDERER : " << enemySpriteManager << std::endl;
   
 }
 
@@ -62,6 +64,7 @@ bool Enemy::objectDetected(int playerX, int range) {
 	bool detected = false;
 	int xDist = enemySpriteManager->getCharacterXpos() - playerX;
 	if (abs(xDist) <= range) detected = true;
+	if (detected) enemySoundManager->playSound(4);
 	return detected;
 }
 
@@ -103,7 +106,7 @@ bool Enemy::blocked(int &flag) {
 // 4 - block
 // 5 - punch
 void Enemy::updateEnemy(SDL_Rect& cameraRect, int playerX){
-  std::cout << this << " UPDATE: " << this->health << std::endl;
+  //std::cout << this << " UPDATE: " << this->health << std::endl;
   int step = 0;
   punching = false;
   endAnimTimer = SDL_GetTicks();
@@ -113,17 +116,23 @@ void Enemy::updateEnemy(SDL_Rect& cameraRect, int playerX){
 		  if (isHit) {
 		       startAnimTimer = SDL_GetTicks();
 		  	if (!blocked(flag)) {
+		  		enemySoundManager->playSound(2);
 		  		//std::cout << "NOT BLOCKED" << std::endl;
 			  	flag = 2;
 			  	step = 0;
 			  	health -= 5;
-			  	if (health <= 0) isDead = true;
+			  	if (health <= 0)  {
+			  		isDead = true;
+			  		enemySoundManager->playSound(1);
+			  	}
 			  	//std::cout << "HEALTH: " << health << std::endl;
-			  } else flag = 4;
+			  } else {
+			  	flag = 4;
+			  }
 			  isHit = false;
 		  } else {
 			  // if MC within range, follow keeping 50 sprites away
-			  isAlert = objectDetected(playerX, 250);
+			  if (!isAlert) isAlert = objectDetected(playerX, 250);
 			  if (isAlert) { 
 			  	//std::cout << "ALERT" << std::endl;
 			  	flag = 1;
@@ -153,7 +162,7 @@ void Enemy::updateEnemy(SDL_Rect& cameraRect, int playerX){
 
 
 void Enemy::renderEnemy(SDL_Rect& cameraRect){
-  std::cout << this << " RENDERER: " << enemySpriteManager << std::endl;
+  //std::cout << this << " RENDERER: " << enemySpriteManager << std::endl;
   enemySpriteManager -> renderSprite(cameraRect);
 }
 
