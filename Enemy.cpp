@@ -127,6 +127,7 @@ void Enemy::updateEnemy(SDL_Rect& cameraRect, int playerX){
 			  	}
 			  	//std::cout << "HEALTH: " << health << std::endl;
 			  } else {
+			  	enemySoundManager->playSound(5);
 			  	flag = 4;
 			  }
 			  isHit = false;
