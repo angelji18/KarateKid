@@ -5,6 +5,7 @@
 
 #include "GameEngine.h"
 #include "SpriteManager.h"
+#include <string.h>
 extern SDL_Rect cameraRect;
 
 class SpriteManager;
@@ -14,7 +15,7 @@ class Enemy{
     Enemy(int health, int block_chance, int strength);
     ~Enemy();
 
-    void initEnemy(int xLoc); 
+    void initEnemy(int xLoc, const char *sprite); 
     void updateEnemy(SDL_Rect& cameraRect, int playerX);
     void renderEnemy(SDL_Rect& cameraRect);
     

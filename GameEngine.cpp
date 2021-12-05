@@ -1,4 +1,5 @@
 #include "GameEngine.h"
+#include <string.h>
 
 const int LEVEL_WIDTH = 3750;
 const int LEVEL_HEIGHT = 960;
@@ -28,7 +29,7 @@ int rightcount = 0;
 int esccount = 0;
 int start = 0;
 
-int enemyCount = 3;
+int enemyCount = 4;
 
 //object definition
 TileMap *tileMap = NULL;
@@ -36,10 +37,11 @@ GameObject *karateKid = NULL;
 Enemy *enemy1 = NULL;
 Enemy *enemy2 = NULL;
 Enemy *enemy3 = NULL;
+Enemy *boss = NULL;
 SDL_Renderer* GameEngine::renderer = NULL;
 ScreenManager *startScreen = NULL;
 
-Enemy *enemies[3];
+Enemy *enemies[4];
 
 
 GameEngine::GameEngine(){
@@ -80,28 +82,31 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   //object initialization
   karateKid = new GameObject();
   
-  // make new sprite manager special for enemies
-  enemy1 = new Enemy(10, 20, 20); // enemy w/ health = 10, block_chance = 20%, strength = 50%
+  
+  enemy1 = new Enemy(15, 20, 20); // enemy w/ health = 10, block_chance = 20%, strength = 50%
   std::cout << enemy1 << std::endl;
   enemy2 = new Enemy(20, 30, 30); // enemy w/ health = 20, block_chance = 30%, strength = 50%
   std::cout << enemy2 << std::endl;
   enemy3 = new Enemy(20, 40, 40); // enemy w/ health = 20, block_chance = 40%, strength = 40%
+  boss = new Enemy(30, 50, 50); // enemy w/ health = 30, block_chance = 50%, strength = 50%
+  
   tileMap = new TileMap();
 
 
   karateKid->initGameObject();
-  enemy1->initEnemy(500);
-  enemy2->initEnemy(900);
-  enemy3->initEnemy(1400);
   
-  enemy1->setHealth(15);
-  enemy2->setHealth(30);
-  enemy3->setHealth(40);
+  //char *basicEnemySprite = "assets/KK_ENEMY1_HIT2.png";
+  enemy1->initEnemy(500, "assets/KK_ENEMY1_HIT2.png");
+  enemy2->initEnemy(900, "assets/KK_ENEMY1_HIT2.png");
+  enemy3->initEnemy(1400, "assets/KK_ENEMY1_HIT2.png");
+  boss->initEnemy(2000, "assets/KK_BOSS.png");
+  
   
   // put enemies into container (array)
   enemies[0] = enemy1;
   enemies[1] = enemy2;
   enemies[2] = enemy3;
+  enemies[3] = boss;
   
 
 
@@ -220,10 +225,17 @@ void gameOver() {
 	paused = true;
 }
 
+// ADDED BY KALEB
+void win() {
+	startScreen->chanageState(4);
+	paused = true;
+}
+
 void GameEngine::updateGameEngine(SDL_Rect& cameraRect){
 
   if (!paused) {
   	  if (karateKid->isDead()) gameOver();
+  	  else if (boss->enemyIsDead()) win();
   	  else {
 		  karateKid->updateGameObject(cameraRect);
 		  //enemy1->updateEnemy(cameraRect, karateKid->getObjectXpos());
@@ -247,16 +259,22 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
   }
   
   /* screen manager actions */
-  if(startScreen->getState() == 1){
-    startScreen->initScreen();
-  } else if(startScreen->getState() == 2){
-    startScreen->endScreen();
-  }
-  else if(startScreen->getState() == 3){
-    startScreen->pauseScreen();
+  
+  switch (startScreen->getState()) {
+  	case 1:
+  		startScreen->initScreen();
+  		break;
+  	case 2:
+  		startScreen->endScreen();
+  		break;
+  	case 3:
+  		startScreen->pauseScreen();
+  		break;
+  	case 4:
+  		startScreen->winScreen();
+  		break;
   }
   
-  //startScreen->displayHealth(100);
   /* end screen manager actions */
   
   

@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "SpriteManager.h"
 #include <math.h>
+#include <string.h>
 
 //SDL_Rect cameraRect;
 
@@ -48,10 +49,10 @@ void Enemy::setHealth(int health) {
 }
 
 // ADDED SPRITEMANAGER
-void Enemy::initEnemy(int xLoc)
+void Enemy::initEnemy(int xLoc, const char *sprite)
 {
   std::cout << "INIT : " << this << " RENDERER : " << enemySpriteManager << std::endl;
-  enemySpriteManager = new SpriteManager("assets/KK_ENEMY1_HIT2.png",xLoc,0);
+  enemySpriteManager = new SpriteManager(sprite,xLoc,0);
   std::cout << "INIT : " << this << " RENDERER : " << enemySpriteManager << std::endl;
   
 }
