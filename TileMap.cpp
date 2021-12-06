@@ -1,12 +1,12 @@
 #include "TileMap.h"
 
-//1-sky,2-cloud,3-plant,4-rock,5-ground
+//1-sky,2-plant,3-rock,4-cloud,5-ground
 
 int lvl1[4][25]={
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,1,2,1,1,2,1,1,3,2,1,1,1,3,1,1,1,1,2,1,3,1,1,4,1},
-  {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5},
+  {4,1,1,4,4,1,1,1,1,4,1,1,1,4,1,1,1,4,1,4,4,1,1,1,4},
+  {1,4,1,1,1,1,1,1,1,1,1,1,1,1,1,4,1,1,1,1,1,4,1,4,1},
+  {1,1,2,1,1,2,1,1,3,2,2,1,1,3,1,1,1,1,2,1,3,1,3,2,1},
+  {5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,6,5,6,5},
 };
 
 TileMap::TileMap(){
@@ -63,17 +63,23 @@ void TileMap::drawTileMap(SDL_Rect& cameraRect){
           TextureManager::renderTexture(tiletype, destRect.x-cameraRect.x, destRect.y,tileMapTexture, &srcRect);
         break;
         case 4:
-          srcRect.x=1200;
+          srcRect.x=0;
           srcRect.y=400;
 
           TextureManager::renderTexture(tiletype, destRect.x-cameraRect.x, destRect.y,tileMapTexture, &srcRect);
         break;
         case 5:
-          srcRect.x=400;
+          srcRect.x=0;
           srcRect.y=0;
 
           TextureManager::renderTexture(tiletype, destRect.x-cameraRect.x, destRect.y,tileMapTexture, &srcRect);
         break;
+          case 6:
+            srcRect.x=400;
+            srcRect.y=0;
+
+            TextureManager::renderTexture(tiletype, destRect.x-cameraRect.x, destRect.y,tileMapTexture, &srcRect);
+          break;
 
       }
 
