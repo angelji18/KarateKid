@@ -31,6 +31,10 @@ int start = 0;
 
 int enemyCount = 4;
 
+int score = 5000;
+int score_start = 0;
+int t = 0;
+
 //object definition
 TileMap *tileMap = NULL;
 GameObject *karateKid = NULL;
@@ -137,8 +141,6 @@ void GameEngine::handleGameEngineEvents(){
       if(input.type == SDL_KEYDOWN)
       {
         //std::cout<<"Key Pressed"<<std::endl;
-
-
         switch(input.key.keysym.sym)
         {
           case SDLK_LEFT:
@@ -169,6 +171,7 @@ void GameEngine::handleGameEngineEvents(){
            case SDLK_RETURN:
             if(startScreen->getState() == 1){
               startScreen->chanageState(0);
+              score_start = SDL_GetTicks() / 500;
             }
             break;
            // ADDED BY KALEB
@@ -202,12 +205,12 @@ void GameEngine::handleGameEngineEvents(){
 
               break;
 
-
-
           }
 
         }
     }
+    if(score_start && !paused) t = score_start + SDL_GetTicks()/500;
+    score = 5000 - t;
 }
 
 // ADDED BY KALEB
@@ -252,6 +255,7 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
   SDL_RenderClear(renderer);
   tileMap->drawTileMap(cameraRect);
   startScreen->displayHealth(karateKid->getObjectHealth());
+  startScreen->displayScore(score);
   karateKid->renderGameObject(cameraRect);
   //enemy1->renderEnemy(cameraRect);
   for (int i = 0; i < enemyCount; i++) {

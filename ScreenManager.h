@@ -18,6 +18,7 @@ class ScreenManager{
         void chanageState(int);
         void displayHealth(int health); // ADDED BY KALEB
         int getState();
+        void displayScore(int);
 };
 
 #endif
