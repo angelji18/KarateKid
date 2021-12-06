@@ -175,6 +175,22 @@ void ScreenManager::displayHealth(int health) {
         TTF_CloseFont(font);*/
 } 
 
+void ScreenManager::displayScore(int score){
+    TTF_Init();
+
+    SDL_Color white = {255, 255, 255};
+    SDL_Texture* my_texture = NULL;
+    TTF_Font* font = TTF_OpenFont("assets/arcadeclassic.regular.ttf", 20);
+    std::string s = "Score " + std::to_string(score);
+    char const *text = s.c_str();
+    SDL_Surface* temp = TTF_RenderText_Solid(font, text, white);
+    my_texture = SDL_CreateTextureFromSurface(GameEngine::renderer, temp);
+    SDL_Rect score_dest = {650, 10, 140, 40};
+    SDL_RenderCopy(GameEngine::renderer, my_texture, NULL, &score_dest);
+
+    SDL_FreeSurface(temp);
+    TTF_CloseFont(font);
+}
 
 
 
