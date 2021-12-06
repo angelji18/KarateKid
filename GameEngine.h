@@ -14,6 +14,7 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_timer.h"
 #include "SDL2/SDL_ttf.h"
+#include "SDL2/SDL_mixer.h"
 
 #include "TextureManager.h"
 #include "GameObject.h"
@@ -21,6 +22,7 @@
 #include "TileMap.h"
 #include "SpriteManager.h"
 #include "ScreenManager.h"
+#include "SoundManager.h"
 
 extern Uint32 frameStart;
 

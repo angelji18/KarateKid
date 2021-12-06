@@ -27,6 +27,7 @@ bool paused = false;
 int leftcount = 0;
 int rightcount = 0;
 int esccount = 0;
+int introcount = 0; // for dialogue during intro
 int start = 0;
 
 int enemyCount = 4;
@@ -44,6 +45,7 @@ Enemy *enemy3 = NULL;
 Enemy *boss = NULL;
 SDL_Renderer* GameEngine::renderer = NULL;
 ScreenManager *startScreen = NULL;
+SoundManager *sound = NULL;
 
 Enemy *enemies[4];
 
@@ -80,7 +82,7 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   isRunning =true;
 
 
-  SDL_SetRenderDrawColor(renderer, 43, 181, 243, 1);
+  SDL_SetRenderDrawColor(renderer, 192, 238, 254, 1);
   
   
   //object initialization
@@ -88,9 +90,9 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   
   
   enemy1 = new Enemy(15, 20, 20); // enemy w/ health = 10, block_chance = 20%, strength = 50%
-  std::cout << enemy1 << std::endl;
+  //std::cout << enemy1 << std::endl;
   enemy2 = new Enemy(20, 30, 30); // enemy w/ health = 20, block_chance = 30%, strength = 50%
-  std::cout << enemy2 << std::endl;
+  //std::cout << enemy2 << std::endl;
   enemy3 = new Enemy(20, 40, 40); // enemy w/ health = 20, block_chance = 40%, strength = 40%
   boss = new Enemy(30, 50, 50); // enemy w/ health = 30, block_chance = 50%, strength = 50%
   
@@ -112,7 +114,10 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
   enemies[2] = enemy3;
   enemies[3] = boss;
   
-
+  
+  // init sound
+  sound = new SoundManager();
+  sound->playMusic(1);
 
   return 0;
 }
@@ -141,6 +146,8 @@ void GameEngine::handleGameEngineEvents(){
       if(input.type == SDL_KEYDOWN)
       {
         //std::cout<<"Key Pressed"<<std::endl;
+
+
         switch(input.key.keysym.sym)
         {
           case SDLK_LEFT:
@@ -159,7 +166,9 @@ void GameEngine::handleGameEngineEvents(){
               if(startScreen->getState() == 0){
                      for (int i = 0; i < enemyCount; i++)
 		      	if (playerAtEnemy(enemies[i], 50)) flag_right = false; // added
-		      else flag_right = true; // modified
+		      else { 
+		      	flag_right = true; // modified
+		      }
 		      if (rightcount == 2){
 		        rightcount = 0;
 		      }
@@ -170,8 +179,21 @@ void GameEngine::handleGameEngineEvents(){
               break;
            case SDLK_RETURN:
             if(startScreen->getState() == 1){
-              startScreen->chanageState(0);
-              score_start = SDL_GetTicks() / 500;
+              sound->stopMusic();
+              startScreen->chanageState(5);
+              sound->playMusic(3);
+            } else if (startScreen->getState() == 5) {
+              //sound->stopMusic();
+              if (introcount < 4) {
+		      //startScreen->chanageState(introcount);
+		      sound->playIntroDialogue(introcount);
+		      introcount++;
+	      } else {
+	      	sound->stopMusic();
+	        startScreen->chanageState(0);
+	        sound->playMusic(2);
+	        score_start = SDL_GetTicks() / 500;
+	      }
             }
             break;
            // ADDED BY KALEB
@@ -205,6 +227,8 @@ void GameEngine::handleGameEngineEvents(){
 
               break;
 
+
+
           }
 
         }
@@ -224,13 +248,17 @@ void doBattle(GameObject *karateKid, Enemy *enem) {
 
 // ADDED BY KALEB
 void gameOver() {
+	sound->stopMusic();
 	startScreen->chanageState(2);
+	sound->playSound(6);
 	paused = true;
 }
 
 // ADDED BY KALEB
 void win() {
+	sound->stopMusic();
 	startScreen->chanageState(4);
+	sound->playSound(7);
 	paused = true;
 }
 
@@ -277,6 +305,9 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
   	case 4:
   		startScreen->winScreen();
   		break;
+  	case 5:
+  		startScreen->introScreen(introcount);
+  		break;
   }
   
   /* end screen manager actions */
@@ -289,6 +320,7 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
 
 void GameEngine::cleanGameEngine()
 {
+  sound->closeSoundManager();
   SDL_DestroyWindow(window);
   SDL_DestroyRenderer(renderer);
   SDL_Quit();

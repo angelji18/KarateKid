@@ -20,7 +20,7 @@ void GameObject::initGameObject()
 }
 
 void GameObject::updateGameObject(SDL_Rect& cameraRect){
-  std::cout << "PLAYER RENDER: " << spriteManager << std::endl;
+  //std::cout << "PLAYER RENDER: " << spriteManager << std::endl;
   spriteManager-> updateSprite();
   GameObject::setCamera(cameraRect);
 }
