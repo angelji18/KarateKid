@@ -31,7 +31,7 @@ int start = 0;
 
 int enemyCount = 4;
 
-int score = 5000;
+int score = 500;
 int score_start = 0;
 int t = 0;
 
@@ -210,7 +210,7 @@ void GameEngine::handleGameEngineEvents(){
         }
     }
     if(score_start && !paused) t = score_start + SDL_GetTicks()/500;
-    score = 5000 - t;
+    score = 500 - t;
 }
 
 // ADDED BY KALEB
