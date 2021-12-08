@@ -18,6 +18,7 @@ const int LEVEL_HEIGHT = 960;
 
 bool flag_left = false;
 bool flag_right = false;
+bool flag_kick = false;
 bool flag_punch = false; // ADDED BY KALEB
 bool flag_hit = false; // ADDED BY KALEB
 
@@ -83,38 +84,38 @@ int GameEngine::initGameEngine(const char* title, int xpos, int ypos, int width,
 
 
   SDL_SetRenderDrawColor(renderer, 192, 238, 254, 1);
-  
-  
+
+
   //object initialization
   karateKid = new GameObject();
-  
-  
+
+
   enemy1 = new Enemy(15, 20, 20); // enemy w/ health = 10, block_chance = 20%, strength = 50%
   //std::cout << enemy1 << std::endl;
   enemy2 = new Enemy(20, 30, 30); // enemy w/ health = 20, block_chance = 30%, strength = 50%
   //std::cout << enemy2 << std::endl;
   enemy3 = new Enemy(20, 40, 40); // enemy w/ health = 20, block_chance = 40%, strength = 40%
   boss = new Enemy(30, 50, 50); // enemy w/ health = 30, block_chance = 50%, strength = 50%
-  
+
   tileMap = new TileMap();
 
 
   karateKid->initGameObject();
-  
+
   //char *basicEnemySprite = "assets/KK_ENEMY1_HIT2.png";
   enemy1->initEnemy(500, "assets/KK_ENEMY1_HIT2.png");
   enemy2->initEnemy(900, "assets/KK_ENEMY1_HIT2.png");
   enemy3->initEnemy(1400, "assets/KK_ENEMY1_HIT2.png");
   boss->initEnemy(2000, "assets/KK_BOSS.png");
-  
-  
+
+
   // put enemies into container (array)
   enemies[0] = enemy1;
   enemies[1] = enemy2;
   enemies[2] = enemy3;
   enemies[3] = boss;
-  
-  
+
+
   // init sound
   sound = new SoundManager();
   sound->playMusic(1);
@@ -166,7 +167,7 @@ void GameEngine::handleGameEngineEvents(){
               if(startScreen->getState() == 0){
                      for (int i = 0; i < enemyCount; i++)
 		      	if (playerAtEnemy(enemies[i], 50)) flag_right = false; // added
-		      else { 
+		      else {
 		      	flag_right = true; // modified
 		      }
 		      if (rightcount == 2){
@@ -206,7 +207,17 @@ void GameEngine::handleGameEngineEvents(){
 		        enemies[i]->setHitFlag(true);
 	      }
               break;
-              
+
+              case SDLK_LSHIFT:
+                 // player has punched
+                 flag_kick = true;
+                 // if the player is within hit range, updateEnemy to react to hit
+                 for (int i = 0; i < enemyCount; i++) {
+   		      if (playerAtEnemy(enemies[i], 70))
+   		        enemies[i]->setHitFlag(true);
+   	      }
+                 break;
+
            case SDLK_ESCAPE:
               if(esccount == 0)
               {
@@ -289,9 +300,9 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
   for (int i = 0; i < enemyCount; i++) {
   	enemies[i]->renderEnemy(cameraRect);
   }
-  
+
   /* screen manager actions */
-  
+
   switch (startScreen->getState()) {
   	case 1:
   		startScreen->initScreen();
@@ -309,10 +320,10 @@ void GameEngine::renderGameEngine(SDL_Rect& cameraRect){
   		startScreen->introScreen(introcount);
   		break;
   }
-  
+
   /* end screen manager actions */
-  
-  
+
+
 
   SDL_RenderPresent(renderer);
 

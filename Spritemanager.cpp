@@ -7,9 +7,13 @@ int lastSecond = 0; // ADDED BY KALEB - for timing animations
 
 Uint32 startPunchTimer; // ADDED BY KALEB
 Uint32 endPunchTimer; // ADDED BY KALEB
+Uint32 startKickTimer;
+Uint32 endKickTimer;
+
 
 
 bool punchAction_flag = 0 ;
+bool kickAction_flag = 0 ;
 
 
 SpriteManager::SpriteManager(const char* texture,int x, int y)
@@ -19,6 +23,8 @@ SpriteManager::SpriteManager(const char* texture,int x, int y)
   ypos = y;
   startPunchTimer = 0;
   endPunchTimer = 300;
+  startKickTimer = 0;
+  endKickTimer = 300;
 }
 
 SpriteManager::~SpriteManager()
@@ -67,6 +73,16 @@ void SpriteManager::updateSprite(){
         destRect.x = xpos;
         flag_left =false;
         lastPosition = srcRect.x; // save lastPosition (don't stay on fight anim)
+      }
+      else if(flag_kick == true){
+
+        kickAction_flag = 1;
+        startKickTimer = SDL_GetTicks();
+
+         srcRect.x = MC_IMG_SRC*6;
+        flag_kick = false;
+
+
       }
 
       // ADDED BY KALEB
