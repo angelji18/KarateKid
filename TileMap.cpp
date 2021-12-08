@@ -10,7 +10,7 @@ int lvl1[4][25]={
 };
 
 TileMap::TileMap(){
-  tileMapTexture = TextureManager::loadTexture("EnvTiles.png");
+  tileMapTexture = TextureManager::loadTexture("assets/EnvTiles.png");
   loadTileMap(lvl1);
   //std::cout << lvl1 << '\n';
   srcRect.w = 400;

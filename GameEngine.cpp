@@ -15,6 +15,7 @@ const int LEVEL_HEIGHT = 960;
  const int STEPX = 10;
 
  SDL_Event input;
+bool flag_allowmove = false; //stops PC from moving behind the start screen
 
 bool flag_left = false;
 bool flag_right = false;
@@ -154,18 +155,21 @@ void GameEngine::handleGameEngineEvents(){
         switch(input.key.keysym.sym)
         {
           case SDLK_LEFT:
-            if(startScreen->getState() == 0){
-		    flag_left = true;
-		    if (leftcount == 2){
-		      leftcount = 0;
-		    }
-		    else{
-		      leftcount++;
-		    }
-	     }
-	     break;
+          if(flag_allowmove == true){
+              if(startScreen->getState() == 0){
+  		            flag_left = true;
+  		              if (leftcount == 2){
+            		      leftcount = 0;
+  		                }
+  		                else{
+  		                  leftcount++;
+  		                  }
+  	                   }
+                     }
+	                    break;
 
           case SDLK_RIGHT:
+          if(flag_allowmove == true){
               if(startScreen->getState() == 0){
                      for (int i = 0; i < enemyCount; i++)
 		      	if (playerAtEnemy(enemies[i], 50)) flag_right = false; // added
@@ -178,10 +182,12 @@ void GameEngine::handleGameEngineEvents(){
 		      else{
 		        rightcount++;
 		      }
-              }
+        }
+      }
               break;
            case SDLK_RETURN:
             if(startScreen->getState() == 1){
+              flag_allowmove = true;
               sound->stopMusic();
               startScreen->chanageState(5);
               sound->playMusic(3);

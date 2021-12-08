@@ -37,6 +37,7 @@ extern const int SCREEN_HEIGHT;
 extern const int MC_IMG_SRC;
 extern const int MC_IMG_DEST;
 
+extern bool flag_allowmove;
 extern bool flag_left;
 extern int leftcount; //for left movement
 extern int rightcount; //for right movement
