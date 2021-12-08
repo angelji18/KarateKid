@@ -34,6 +34,7 @@ Enemy::Enemy(int health, int block_chance, int strength){
 	
 	isAlert = false;
 	isHit = false;
+	isKicked = false;
 	isDead = false;
 
 	flag = 0; // for state
