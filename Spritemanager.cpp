@@ -8,8 +8,13 @@ int lastSecond = 0; // ADDED BY KALEB - for timing animations
 Uint32 startPunchTimer; // ADDED BY KALEB
 Uint32 endPunchTimer; // ADDED BY KALEB
 
+Uint32 startKickTimer;
+Uint32 endKickTimer;
+
 
 bool punchAction_flag = 0 ;
+
+bool kickAction_flag = 0 ;
 
 
 SpriteManager::SpriteManager(const char* texture,int x, int y)
@@ -19,6 +24,8 @@ SpriteManager::SpriteManager(const char* texture,int x, int y)
   ypos = y;
   startPunchTimer = 0;
   endPunchTimer = 300;
+  startKickTimer = 0;
+  endKickTimer = 300;
 }
 
 SpriteManager::~SpriteManager()
@@ -68,31 +75,18 @@ void SpriteManager::updateSprite(){
         flag_left =false;
         lastPosition = srcRect.x; // save lastPosition (don't stay on fight anim)
       }
+      else if(flag_kick == true){
 
+        kickAction_flag = 1;
+        startKickTimer = SDL_GetTicks();
+
+      	 srcRect.x = MC_IMG_SRC*6;
+      	flag_kick = false;
+
+
+      }
       // ADDED BY KALEB
       else if (flag_punch == true) {
-      	//lastPosition = srcRect.x; // save lastPosition (don't stay on fight anim)
-        //
-      	// lastSecond = SDL_GetTicks() / 500;
-        // gSpriteClips[ 0 ].x =   2800;
-        // gSpriteClips[ 0 ].y =   0;
-        // gSpriteClips[ 0 ].w =  MC_IMG_SRC;
-        // gSpriteClips[ 0 ].h = MC_IMG_SRC;
-        //
-        // gSpriteClips[ 1 ].x =  2800;
-        // gSpriteClips[ 1 ].y =   0;
-        // gSpriteClips[ 1 ].w =  MC_IMG_SRC;
-        // gSpriteClips[ 1 ].h = MC_IMG_SRC;
-        //
-        // gSpriteClips[ 2 ].x =   2800;
-        // gSpriteClips[ 2 ].y =   0;
-        // gSpriteClips[ 2 ].w =  MC_IMG_SRC;
-        // gSpriteClips[ 2 ].h = MC_IMG_SRC;
-        //
-        // gSpriteClips[ 3 ].x =  2800;
-        // gSpriteClips[ 3 ].y =   0;
-        // gSpriteClips[ 3 ].w =  MC_IMG_SRC;
-        // gSpriteClips[ 3 ].h = MC_IMG_SRC;
 
         punchAction_flag = 1;
         startPunchTimer = SDL_GetTicks();

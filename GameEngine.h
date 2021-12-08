@@ -44,6 +44,7 @@ extern int esccount;
 extern bool flag_right;
 
 extern int start; // to place the player in starting position
+extern bool flag_kick;
 extern bool flag_punch; // for player punching
 extern bool flag_hit; // for player getting hit
 extern bool paused;
