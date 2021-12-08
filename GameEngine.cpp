@@ -184,6 +184,7 @@ void GameEngine::handleGameEngineEvents(){
               startScreen->chanageState(5);
               sound->playMusic(3);
             } else if (startScreen->getState() == 5) {
+              sound->stopSFX();
               //sound->stopMusic();
               if (introcount < 4) {
 		      //startScreen->chanageState(introcount);

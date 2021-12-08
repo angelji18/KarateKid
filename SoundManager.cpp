@@ -116,6 +116,10 @@ void SoundManager::playIntroDialogue(int sequence) {
 	Mix_PlayChannel(-1, intro[sequence], 0); 
 }
 
+void SoundManager::stopSFX() {
+	Mix_HaltChannel(-1);
+}
+
 void SoundManager::pauseMusic() {
 	Mix_PauseMusic();
 } 

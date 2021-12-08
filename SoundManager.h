@@ -17,6 +17,7 @@ class SoundManager{
         void pauseMusic();
         void resumeMusic();
         void stopMusic();
+        void stopSFX();
         
         void closeSoundManager();
 
