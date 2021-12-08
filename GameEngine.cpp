@@ -30,6 +30,8 @@ int rightcount = 0;
 int esccount = 0;
 int introcount = 0; // for dialogue during intro
 int start = 0;
+int punchDistance = 70; // for distance of a punch to land
+int kickDistance = 140; // distance of a kick to land
 
 int enemyCount = 4;
 
@@ -204,7 +206,7 @@ void GameEngine::handleGameEngineEvents(){
               flag_punch = true;
               // if the player is within hit range, updateEnemy to react to hit
               for (int i = 0; i < enemyCount; i++) {
-		      if (playerAtEnemy(enemies[i], 70))
+		      if (playerAtEnemy(enemies[i], punchDistance))
 		        enemies[i]->setHitFlag(true);
 	      }
               break;
@@ -214,8 +216,8 @@ void GameEngine::handleGameEngineEvents(){
                  flag_kick = true;
                  // if the player is within hit range, updateEnemy to react to hit
                  for (int i = 0; i < enemyCount; i++) {
-   		      if (playerAtEnemy(enemies[i], 70))
-   		        enemies[i]->setHitFlag(true);
+   		      if (playerAtEnemy(enemies[i], kickDistance))
+   		        enemies[i]->setKickFlag(true);
    	      }
                  break;
 

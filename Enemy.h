@@ -29,6 +29,7 @@ class Enemy{
     
     void setAlertFlag(bool flag);
     void setHitFlag(bool flag);
+    void setKickFlag(bool flag);
     
     bool enemyIsDead();
     bool blocked(int &flag);
@@ -53,6 +54,7 @@ class Enemy{
     
     bool isAlert;
     bool isHit;
+    bool isKicked;
     bool isDead;
 
     int last_rand; // ensure same number doesn't happen twice in a row

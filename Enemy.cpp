@@ -93,8 +93,10 @@ bool Enemy::blocked(int &flag) {
 	srand(time(0));
 	int rand_num = rand() % 100 + 1; // value btwn 1 and 100
 	//std::cout << rand_num << std::endl;
-	if (rand_num < block_chance) std::cout << "BLOCK" << std::endl;
-	return (rand_num < block_chance);
+	//if (rand_num < block_chance) std::cout << "BLOCK" << std::endl;
+	if (isHit) return (rand_num < block_chance);
+	else if (isKicked) return (rand_num < (block_chance / 2));
+	else return false;
 }
 
 // isHit is given to determine if enemy should react to being hit
@@ -131,6 +133,24 @@ void Enemy::updateEnemy(SDL_Rect& cameraRect, int playerX){
 			  	flag = 4;
 			  }
 			  isHit = false;
+		  } else if (isKicked) {
+		  	startAnimTimer = SDL_GetTicks();
+		  	if (!blocked(flag)) {
+		  		enemySoundManager->playSound(2);
+		  		//std::cout << "NOT BLOCKED" << std::endl;
+			  	flag = 2;
+			  	step = 0;
+			  	health -= 2;
+			  	if (health <= 0)  {
+			  		isDead = true;
+			  		enemySoundManager->playSound(1);
+			  	}
+			  	//std::cout << "HEALTH: " << health << std::endl;
+			  } else {
+			  	enemySoundManager->playSound(5);
+			  	flag = 4;
+			  }
+			  isKicked = false;
 		  } else {
 			  // if MC within range, follow keeping 50 sprites away
 			  if (!isAlert) isAlert = objectDetected(playerX, 250);
@@ -181,6 +201,10 @@ void Enemy::setAlertFlag(bool flag) {
 
 void Enemy::setHitFlag(bool flag) {
 	isHit = flag;
+}
+
+void Enemy::setKickFlag(bool flag) {
+	isKicked = flag;
 }
 
 bool Enemy::enemyIsDead() {
